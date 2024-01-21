@@ -1,0 +1,4 @@
+
+        for i until i > 3 by 1 
+        A <- 3
+        
