@@ -1,0 +1,9 @@
+func main() begin
+        for i until i <=30 by 1        
+        writeNumber(i)
+        var x <- writeString("je t'oublie\ pas")
+        number shhh <- jetaime(u<3)
+        end
+
+        func foo() return 1
+        

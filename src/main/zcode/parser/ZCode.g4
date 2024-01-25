@@ -16,7 +16,7 @@ funclist: func funclist | func;
 func: FUNC IDENTIFIER LB decllist RB option;
 
 option: optionprime |;
-optionprime: return_stmt | block_stmt;
+optionprime: (return_stmt NEWLINE) | (block_stmt NEWLINE);
 
 decllist: declprime |;
 
@@ -30,10 +30,14 @@ stmt:
 	| for_stmt
 	| break_stmt
 	| continue_stmt
-	| return_stmt;
+	| return_stmt
+	| funccall_stmt
+	| block_stmt;
 //
 
-decl: (normaldecl | arraydecl) NEWLINE;
+standalone_stmt: stmt NEWLINE;
+
+decl: (normaldecl | arraydecl);
 
 normaldecl: (normaltype | implicittype) IDENTIFIER;
 
@@ -46,7 +50,7 @@ normaltype: NUMBER | STRING | BOOL;
 implicittype: DYNAMIC | VAR;
 
 //assignment statement
-assign_stmt: lhs ARROW exp NEWLINE;
+assign_stmt: lhs ASSIGNOP exp;
 //
 
 lhs: IDENTIFIER | indexexp | arraydecl | normaldecl;
@@ -93,7 +97,8 @@ arrayvalue: LP literallist RP;
 literallist: exp9 COMMA literallist | exp9;
 
 // function call statement
-funccall_stmt: (IDENTIFIER LB explist RB) | io_func NEWLINE;
+funccall_stmt: (IDENTIFIER LB explist RB) | io_func;
+//
 
 explist: expprime |;
 
@@ -101,7 +106,7 @@ expprime: exp COMMA expprime | exp;
 //
 
 // if statement
-if_stmt: IF exp stmt (elif_list)? (NEWLINE ELSE stmt)? NEWLINE;
+if_stmt: IF exp stmt (elif_list)? (NEWLINE ELSE stmt)?;
 
 elif_list: NEWLINE elif_stmt elif_list | NEWLINE elif_stmt;
 
@@ -109,25 +114,25 @@ elif_stmt: ELIF exp stmt;
 //
 
 //for statement
-for_stmt: FOR IDENTIFIER UNTIL exp BY exp NEWLINE stmt NEWLINE;
+for_stmt: FOR IDENTIFIER UNTIL exp BY exp NEWLINE stmt;
 //
 
 //break statement
-break_stmt: BREAK NEWLINE;
+break_stmt: BREAK;
 // 
 
 //continue statement
-continue_stmt: CONTINUE NEWLINE;
+continue_stmt: CONTINUE;
 // 
 
 //return statement
-return_stmt: RETURN exp NEWLINE;
+return_stmt: RETURN exp;
 //
 
 //block statement
-block_stmt: BEGIN NEWLINE stmtlist END NEWLINE;
+block_stmt: BEGIN NEWLINE stmtlist END;
 stmtlist: stmtprime |;
-stmtprime: stmt NEWLINE stmtprime | stmt NEWLINE;
+stmtprime: standalone_stmt stmtprime | standalone_stmt;
 //
 
 // IO
@@ -139,7 +144,7 @@ io_func:
 	| readString
 	| writeString;
 
-readNumber: 'readNumber';
+readNumber: 'readNumber' LB RB;
 
 writeNumber: 'writeNumber' LB exp RB;
 
@@ -159,7 +164,7 @@ writeString: 'writeString' LB exp RB;
 // arrayvalue: LP literallist RP; literallist: literal COMMA literallist | literal; literal: NUMLIT
 // | STRINGLIT | BOOLLIT | arrayvalue;
 
-// assignstmt: lhs ARROW exp;
+// assignstmt: lhs ASSIGNOP exp;
 
 // lhs: scaladecl | arraydecl;
 
@@ -219,7 +224,7 @@ MULOP: '*';
 DIVOP: '/';
 MODOP: '%';
 EQUALOP: '=';
-ARROW: '<-';
+ASSIGNOP: '<-';
 DIFFOP: '!=';
 LESS: '<';
 LESSEQ: '<=';
@@ -238,14 +243,13 @@ COMMA: ',';
 SEMI: ';';
 //
 
-// TYPE AND VALUE
-
 // IDENTIFIER
 IDENTIFIER: [A-Za-z_] [A-Za-z0-9_]*;
 
 COMMENT: '##' ~[\r\n]* '\r'? ('\n' | EOF) -> skip;
 
-NEWLINE: ('\r' | '\n')+;
+NEWLINE: ('\r'? '\n')+; //NEWLINE
+
 WS: [ \t\r]+ -> skip; // skip spaces, tabs, newlines
 ERROR_CHAR: . {raise ErrorToken(self.text)};
 UNCLOSE_STRING: .;

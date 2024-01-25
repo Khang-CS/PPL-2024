@@ -49,6 +49,11 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ZCodeParser#standalone_stmt.
+    def visitStandalone_stmt(self, ctx:ZCodeParser.Standalone_stmtContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ZCodeParser#decl.
     def visitDecl(self, ctx:ZCodeParser.DeclContext):
         return self.visitChildren(ctx)

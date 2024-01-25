@@ -1,0 +1,6 @@
+func main() begin
+        for i until i <=30 by 1
+        writeNumber(i)     
+        end
+        func foo() return 1
+        
