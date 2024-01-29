@@ -1,0 +1,9 @@
+
+        func main(number x)
+            begin
+                number a <- [1, 2, 3, 4, 5]
+                var i <- 2
+                for i until i > x / 2 by 1
+                    writeNumber(i)
+            end
+        

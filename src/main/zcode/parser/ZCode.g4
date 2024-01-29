@@ -11,16 +11,29 @@ options {
 program: funclist EOF;
 // RECOGNIZER - PARSER //
 
+//new line declaration
+newline_list: newline_prime |;
+
+newline_prime: NEWLINE newline_prime | NEWLINE;
+//
+
 funclist: func funclist | func;
 
-func: FUNC IDENTIFIER LB decllist RB option;
+func:
+	newline_list FUNC IDENTIFIER LB paramlist RB newline_list option;
+
+param: scala_param | arraydecl;
+
+scala_param: normaltype IDENTIFIER;
+
+paramlist: paramprime |;
+
+paramprime: param COMMA paramprime | param;
 
 option: optionprime |;
-optionprime: (return_stmt NEWLINE) | (block_stmt NEWLINE);
-
-decllist: declprime |;
-
-declprime: decl COMMA declprime | decl;
+optionprime:
+	(return_stmt newline_prime)
+	| (block_stmt newline_prime);
 
 //stmt list
 stmt:
@@ -35,9 +48,13 @@ stmt:
 	| block_stmt;
 //
 
-standalone_stmt: stmt NEWLINE;
+standalone_stmt: newline_list stmt newline_prime;
 
 decl: (normaldecl | arraydecl);
+
+decllist: declprime |;
+
+declprime: decl COMMA declprime | decl;
 
 normaldecl: (normaltype | implicittype) IDENTIFIER;
 
@@ -91,10 +108,11 @@ exp9:
 	| STRINGLIT
 	| arrayvalue
 	| IDENTIFIER
-	| funccall_stmt;
+	| funccall_stmt
+	| LB exp RB;
 
-arrayvalue: LP literallist RP;
-literallist: exp9 COMMA literallist | exp9;
+arrayvalue: LP array_value_list RP;
+array_value_list: exp COMMA array_value_list | exp;
 
 // function call statement
 funccall_stmt: (IDENTIFIER LB explist RB) | io_func;
@@ -106,15 +124,25 @@ expprime: exp COMMA expprime | exp;
 //
 
 // if statement
-if_stmt: IF exp stmt (elif_list)? (NEWLINE ELSE stmt)?;
+if_stmt:
+	IF LB exp RB newline_list stmt elif_stmt_list else_stmt;
 
-elif_list: NEWLINE elif_stmt elif_list | NEWLINE elif_stmt;
+elif_stmt_list: newline_prime elif_stmt_prime |;
 
-elif_stmt: ELIF exp stmt;
+elif_stmt_prime:
+	elif_stmt newline_prime elif_stmt_prime
+	| elif_stmt;
+
+elif_stmt: ELIF LB exp RB newline_list stmt;
+
+else_stmt: newline_prime else_stmt_prime |;
+
+else_stmt_prime: ELSE newline_list stmt;
+
 //
 
 //for statement
-for_stmt: FOR IDENTIFIER UNTIL exp BY exp NEWLINE stmt;
+for_stmt: FOR IDENTIFIER UNTIL exp BY exp newline_list stmt;
 //
 
 //break statement
@@ -130,7 +158,7 @@ return_stmt: RETURN exp;
 //
 
 //block statement
-block_stmt: BEGIN NEWLINE stmtlist END;
+block_stmt: BEGIN newline_list stmtlist END;
 stmtlist: stmtprime |;
 stmtprime: standalone_stmt stmtprime | standalone_stmt;
 //
@@ -157,19 +185,6 @@ readString: 'readString' LB RB;
 writeString: 'writeString' LB exp RB;
 //
 
-// arraydecl: scalatype IDENTIFIER LP dimensions RP;
-
-// dimensions: NUMLIT COMMA dimensions | NUMLIT;
-
-// arrayvalue: LP literallist RP; literallist: literal COMMA literallist | literal; literal: NUMLIT
-// | STRINGLIT | BOOLLIT | arrayvalue;
-
-// assignstmt: lhs ASSIGNOP exp;
-
-// lhs: scaladecl | arraydecl;
-
-// exp: literal;
-
 // LEXICAL ANALYSIS 
 
 // LITERALS
@@ -178,18 +193,33 @@ writeString: 'writeString' LB exp RB;
 NUMLIT: INTPART DECPART? EXPONENTPART?;
 fragment INTPART: '0' | [1-9] [0-9]*;
 fragment DECPART: '.' [0-9]*;
-fragment EXPONENTPART: 'e' ('-' | '+')? [1-9] [0-9]*;
+fragment EXPONENTPART: ('e' | 'E') ('-' | '+')? [1-9] [0-9]*;
 
 // 2. Boolean literal
 BOOLLIT: TRUE | FALSE;
 
 // 3. String
-STRINGLIT:
-	["] (ESCAPE | DQ | ~["\r\n])* ["] {self.text = self.text[1:len(self.text)-1]};
-fragment ESCAPE:
-	'\\' ('b' | 'f' | 'r' | 'n' | 't' | '\'' | '\\');
 
-fragment DQ: '\'"';
+// STRING ERROR
+
+STRINGLIT: (
+		'""' // Case 1: There is no character
+		| '"' ('\'"' | '\\' [btnfr'\\] | ~[\r\n\\"])* (
+			'\'"'
+			| '\\' [btnfr'\\]
+			| ~[\r\n\\"']
+		) '"'
+	) {self.text = self.text[1:-1]};
+// Case 2: There is at least 1 character -> The single quote can not stand at the end of string
+
+//
+
+ILLEGAL_ESCAPE: (
+		'"' ('\\' [bfrnt\\'] | ~[\n\r\\"])* ('\\' (~[bfrnt'\\]))
+	) {self.text = self.text[1:]; raise IllegalEscape(self.text)};
+UNCLOSED_STRING: ('"' ('\'"' | '\\' [btnfr'\\] | ~[\r\n\\"])*) {self.text = self.text[1:]; raise UncloseString(self.text)
+		};
+
 //
 
 // KEYWORDS
@@ -240,7 +270,6 @@ RB: ')';
 LP: '[';
 RP: ']';
 COMMA: ',';
-SEMI: ';';
 //
 
 // IDENTIFIER
@@ -248,9 +277,7 @@ IDENTIFIER: [A-Za-z_] [A-Za-z0-9_]*;
 
 COMMENT: '##' ~[\r\n]* '\r'? ('\n' | EOF) -> skip;
 
-NEWLINE: ('\r'? '\n')+; //NEWLINE
+NEWLINE: '\n'; //NEWLINE
 
 WS: [ \t\r]+ -> skip; // skip spaces, tabs, newlines
 ERROR_CHAR: . {raise ErrorToken(self.text)};
-UNCLOSE_STRING: .;
-ILLEGAL_ESCAPE: .;

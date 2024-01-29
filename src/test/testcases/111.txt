@@ -1,1 +1,1 @@
-a=2 ## This comment is not allowed in ZCode.
+"This is a string with tab	"

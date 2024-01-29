@@ -1,0 +1,25 @@
+func main()
+        begin
+        if (a>7) printString("32")
+        printString("11")
+
+
+
+
+
+        elif (a>6) printString("haha")
+
+
+
+
+
+
+
+        a<-32*10+15
+
+
+        elif (a=6) readString()
+
+        else return 32
+        end
+        
