@@ -4,7 +4,15 @@ func main()
 
         elif (a>6) printString("haha")
 
-        elif (a=6) readString() ## else return 32        
+        elif (a=6) readString() ## else return 32
 
+        var z <- (10 >= 20) > 10 + 15 + (not fun) % 12e-37
+        begin
+        printString("Wingardium Leviosa")
+        begin
+        begin
+        end
+        end
+        end
         end
         

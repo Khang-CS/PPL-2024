@@ -1,4 +1,1 @@
-
-    "abc - xyz"
-    "abc \ xyz"
-                
+"Do not love the artist :(("

@@ -142,7 +142,115 @@ class LexerSuite(unittest.TestCase):
         expect="""'",<EOF>"""
         self.assertTrue(TestLexer.test(test,expect,135))
 
-    """Multiple Test"""
+    def test_36(self):
+        test="""\"\'\"\""""
+        expect="""'",<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,136))
+
+    def test_37(self):
+        test="""\"\b\f\t\'sss\""""
+        expect="""\b\f\t\'sss,<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,137))
+
+    def test_38(self):
+        test="""#"""
+        expect="""Error Token #"""
+        self.assertTrue(TestLexer.test(test,expect,138))
+    
+    def test_39(self):
+        test="""/'"""
+        expect="""/,Error Token '"""
+        self.assertTrue(TestLexer.test(test,expect,139))
+
+    def test_40(self):
+        test="""+-/,"""
+        expect="""+,-,/,,,<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,140))
+
+    def test_41(self):
+        test="""\"Do not love the artist :((\""""
+        expect="""Do not love the artist :((,<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,141))
+
+    def test_42(self):
+        test="""func main(string a, string b) return a ... \"the world"""
+        expect="""func,main,(,string,a,,,string,b,),return,a,...,Unclosed String: the world"""
+        self.assertTrue(TestLexer.test(test,expect,142))
+
+    """---------Multiple Test----------"""
+
+    def test_98(self):
+        test="""func main()
+        begin
+        if (a>7) printString("32")
+
+        elif (a>6) printString("haha")
+
+        elif (a=6) readString() ## else return 32
+
+        var z <- true > 3 + 10 <= 20
+        
+
+        end"""
+        expect="""func,main,(,),
+,begin,
+,if,(,a,>,7,),printString,(,32,),
+,
+,elif,(,a,>,6,),printString,(,haha,),
+,
+,elif,(,a,=,6,),readString,(,),
+,
+,var,z,<-,true,>,3,+,10,<=,20,
+,
+,
+,end,<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,198))
+
+    def test_99(self):
+        test="""
+        func areDivisors(number num1, number num2)
+        return ((num1 % num2 = 0) or (num2 % num1 = 0))
+        func main()
+        begin
+        var num1 <- readNumber()
+        var num2 <- readNumber()
+        if (areDivisors(num1, num2)) writeString("Yes")
+        else writeString("No")
+        end"""
+        expect="""\n,func,areDivisors,(,number,num1,,,number,num2,),\n,return,(,(,num1,%,num2,=,0,),or,(,num2,%,num1,=,0,),),\n,func,main,(,),\n,begin,\n,var,num1,<-,readNumber,(,),\n,var,num2,<-,readNumber,(,),\n,if,(,areDivisors,(,num1,,,num2,),),writeString,(,Yes,),\n,else,writeString,(,No,),\n,end,<EOF>"""
+        self.assertTrue(TestLexer.test(test,expect,199))
+
+    def test_100(self):
+        
+        input = """func main()
+        begin
+        if (a>7) printString("32")
+
+        elif (a>6) printString("haha")
+
+        elif (a=6) readString() ## else return 32
+
+        var z <- true > 3 >= 32
+
+
+        
+        end
+        """
+        expect = """func,main,(,),
+,begin,
+,if,(,a,>,7,),printString,(,32,),
+,
+,elif,(,a,>,6,),printString,(,haha,),
+,
+,elif,(,a,=,6,),readString,(,),
+,
+,var,z,<-,true,>,3,>=,32,
+,
+,
+,
+,end,
+,<EOF>"""
+        self.assertTrue(TestLexer.test(input,expect,200))
 
     # def test_20(self):
     #     self.assertTrue(TestLexer.test("""\"this is unclosed string""","Unclosed String: this is unclosed string",120))

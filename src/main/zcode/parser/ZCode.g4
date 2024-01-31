@@ -96,9 +96,9 @@ exp4: exp4 (ADDOP | SUBOP) exp5 | exp5;
 
 exp5: exp5 (MULOP | DIVOP | MODOP) exp6 | exp6;
 
-exp6: NOT exp7 | exp7;
+exp6: NOT exp6 | exp7;
 
-exp7: SUBOP exp8 | exp8;
+exp7: SUBOP exp7 | exp8;
 
 exp8: indexexp | exp9;
 
@@ -275,7 +275,7 @@ COMMA: ',';
 // IDENTIFIER
 IDENTIFIER: [A-Za-z_] [A-Za-z0-9_]*;
 
-COMMENT: '##' ~[\r\n]* '\r'? ('\n' | EOF) -> skip;
+COMMENT: '##' ~[\r\n]* -> skip;
 
 NEWLINE: '\n'; //NEWLINE
 

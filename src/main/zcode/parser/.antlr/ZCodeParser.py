@@ -119,8 +119,8 @@ def serializedATN():
         29,-1,0,289,290,3,60,30,0,290,296,1,0,0,0,291,292,10,2,0,0,292,293,
         7,5,0,0,293,295,3,60,30,0,294,291,1,0,0,0,295,298,1,0,0,0,296,294,
         1,0,0,0,296,297,1,0,0,0,297,59,1,0,0,0,298,296,1,0,0,0,299,300,5,
-        31,0,0,300,303,3,62,31,0,301,303,3,62,31,0,302,299,1,0,0,0,302,301,
-        1,0,0,0,303,61,1,0,0,0,304,305,5,35,0,0,305,308,3,64,32,0,306,308,
+        31,0,0,300,303,3,60,30,0,301,303,3,62,31,0,302,299,1,0,0,0,302,301,
+        1,0,0,0,303,61,1,0,0,0,304,305,5,35,0,0,305,308,3,62,31,0,306,308,
         3,64,32,0,307,304,1,0,0,0,307,306,1,0,0,0,308,63,1,0,0,0,309,312,
         3,46,23,0,310,312,3,66,33,0,311,309,1,0,0,0,311,310,1,0,0,0,312,
         65,1,0,0,0,313,324,5,7,0,0,314,324,5,8,0,0,315,324,5,9,0,0,316,324,
@@ -2095,6 +2095,10 @@ class ZCodeParser ( Parser ):
         def NOT(self):
             return self.getToken(ZCodeParser.NOT, 0)
 
+        def exp6(self):
+            return self.getTypedRuleContext(ZCodeParser.Exp6Context,0)
+
+
         def exp7(self):
             return self.getTypedRuleContext(ZCodeParser.Exp7Context,0)
 
@@ -2118,7 +2122,7 @@ class ZCodeParser ( Parser ):
                 self.state = 299
                 self.match(ZCodeParser.NOT)
                 self.state = 300
-                self.exp7()
+                self.exp6()
                 pass
             elif token in [1, 2, 3, 4, 5, 6, 7, 8, 9, 35, 48, 50, 53]:
                 self.enterOuterAlt(localctx, 2)
@@ -2147,6 +2151,10 @@ class ZCodeParser ( Parser ):
         def SUBOP(self):
             return self.getToken(ZCodeParser.SUBOP, 0)
 
+        def exp7(self):
+            return self.getTypedRuleContext(ZCodeParser.Exp7Context,0)
+
+
         def exp8(self):
             return self.getTypedRuleContext(ZCodeParser.Exp8Context,0)
 
@@ -2170,7 +2178,7 @@ class ZCodeParser ( Parser ):
                 self.state = 304
                 self.match(ZCodeParser.SUBOP)
                 self.state = 305
-                self.exp8()
+                self.exp7()
                 pass
             elif token in [1, 2, 3, 4, 5, 6, 7, 8, 9, 48, 50, 53]:
                 self.enterOuterAlt(localctx, 2)

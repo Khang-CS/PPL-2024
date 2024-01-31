@@ -146,9 +146,9 @@ def serializedATN():
         buf.write("\u0127\u0129\5> \2\u0128\u0125\3\2\2\2\u0129\u012c\3\2")
         buf.write("\2\2\u012a\u0128\3\2\2\2\u012a\u012b\3\2\2\2\u012b=\3")
         buf.write("\2\2\2\u012c\u012a\3\2\2\2\u012d\u012e\7!\2\2\u012e\u0131")
-        buf.write("\5@!\2\u012f\u0131\5@!\2\u0130\u012d\3\2\2\2\u0130\u012f")
+        buf.write("\5> \2\u012f\u0131\5@!\2\u0130\u012d\3\2\2\2\u0130\u012f")
         buf.write("\3\2\2\2\u0131?\3\2\2\2\u0132\u0133\7%\2\2\u0133\u0136")
-        buf.write("\5B\"\2\u0134\u0136\5B\"\2\u0135\u0132\3\2\2\2\u0135\u0134")
+        buf.write("\5@!\2\u0134\u0136\5B\"\2\u0135\u0132\3\2\2\2\u0135\u0134")
         buf.write("\3\2\2\2\u0136A\3\2\2\2\u0137\u013a\5\60\31\2\u0138\u013a")
         buf.write("\5D#\2\u0139\u0137\3\2\2\2\u0139\u0138\3\2\2\2\u013aC")
         buf.write("\3\2\2\2\u013b\u0146\7\t\2\2\u013c\u0146\7\n\2\2\u013d")
@@ -2322,6 +2322,10 @@ class ZCodeParser ( Parser ):
         def NOT(self):
             return self.getToken(ZCodeParser.NOT, 0)
 
+        def exp6(self):
+            return self.getTypedRuleContext(ZCodeParser.Exp6Context,0)
+
+
         def exp7(self):
             return self.getTypedRuleContext(ZCodeParser.Exp7Context,0)
 
@@ -2351,7 +2355,7 @@ class ZCodeParser ( Parser ):
                 self.state = 299
                 self.match(ZCodeParser.NOT)
                 self.state = 300
-                self.exp7()
+                self.exp6()
                 pass
             elif token in [ZCodeParser.T__0, ZCodeParser.T__1, ZCodeParser.T__2, ZCodeParser.T__3, ZCodeParser.T__4, ZCodeParser.T__5, ZCodeParser.NUMLIT, ZCodeParser.BOOLLIT, ZCodeParser.STRINGLIT, ZCodeParser.SUBOP, ZCodeParser.LB, ZCodeParser.LP, ZCodeParser.IDENTIFIER]:
                 self.enterOuterAlt(localctx, 2)
@@ -2379,6 +2383,10 @@ class ZCodeParser ( Parser ):
 
         def SUBOP(self):
             return self.getToken(ZCodeParser.SUBOP, 0)
+
+        def exp7(self):
+            return self.getTypedRuleContext(ZCodeParser.Exp7Context,0)
+
 
         def exp8(self):
             return self.getTypedRuleContext(ZCodeParser.Exp8Context,0)
@@ -2409,7 +2417,7 @@ class ZCodeParser ( Parser ):
                 self.state = 304
                 self.match(ZCodeParser.SUBOP)
                 self.state = 305
-                self.exp8()
+                self.exp7()
                 pass
             elif token in [ZCodeParser.T__0, ZCodeParser.T__1, ZCodeParser.T__2, ZCodeParser.T__3, ZCodeParser.T__4, ZCodeParser.T__5, ZCodeParser.NUMLIT, ZCodeParser.BOOLLIT, ZCodeParser.STRINGLIT, ZCodeParser.LB, ZCodeParser.LP, ZCodeParser.IDENTIFIER]:
                 self.enterOuterAlt(localctx, 2)
