@@ -8,7 +8,7 @@ options {
 	language = Python3;
 }
 
-program: funclist EOF;
+program: decllist EOF;
 // RECOGNIZER - PARSER //
 
 //new line declaration
@@ -17,7 +17,11 @@ newline_list: newline_prime |;
 newline_prime: NEWLINE newline_prime | NEWLINE;
 //
 
-funclist: func funclist | func;
+decllist: decl decllist | decl;
+
+decl: func | var_init;
+
+var_init: newline_list vardecl (ASSIGNOP exp)? newline_prime;
 
 func:
 	newline_list FUNC IDENTIFIER LB paramlist RB newline_list option;
@@ -37,7 +41,7 @@ optionprime:
 
 //stmt list
 stmt:
-	decl
+	vardecl
 	| assign_stmt
 	| if_stmt
 	| for_stmt
@@ -50,11 +54,11 @@ stmt:
 
 standalone_stmt: newline_list stmt newline_prime;
 
-decl: (normaldecl | arraydecl);
+vardecl: (normaldecl | arraydecl);
 
-decllist: declprime |;
+vardecllist: declprime |;
 
-declprime: decl COMMA declprime | decl;
+declprime: vardecl COMMA declprime | vardecl;
 
 normaldecl: (normaltype | implicittype) IDENTIFIER;
 

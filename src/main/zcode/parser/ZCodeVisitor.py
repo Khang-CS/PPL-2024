@@ -24,8 +24,18 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#funclist.
-    def visitFunclist(self, ctx:ZCodeParser.FunclistContext):
+    # Visit a parse tree produced by ZCodeParser#decllist.
+    def visitDecllist(self, ctx:ZCodeParser.DecllistContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ZCodeParser#decl.
+    def visitDecl(self, ctx:ZCodeParser.DeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ZCodeParser#var_init.
+    def visitVar_init(self, ctx:ZCodeParser.Var_initContext):
         return self.visitChildren(ctx)
 
 
@@ -74,13 +84,13 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#decl.
-    def visitDecl(self, ctx:ZCodeParser.DeclContext):
+    # Visit a parse tree produced by ZCodeParser#vardecl.
+    def visitVardecl(self, ctx:ZCodeParser.VardeclContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#decllist.
-    def visitDecllist(self, ctx:ZCodeParser.DecllistContext):
+    # Visit a parse tree produced by ZCodeParser#vardecllist.
+    def visitVardecllist(self, ctx:ZCodeParser.VardecllistContext):
         return self.visitChildren(ctx)
 
 

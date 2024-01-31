@@ -275,7 +275,7 @@ end
         ## this is a comment too >>>> <<<<<<<xxxxx
         number a[5] <- [3+2/7*18%(32),30e-7-15,110.20e+15]
 
-        
+
         end
         ## Cristiano Ronaldo is better than Lionel Messi
 
@@ -283,6 +283,34 @@ end
         """
         expect="successful"
         self.assertTrue(TestParser.test(input,expect,215))
+
+    def test_16(self):
+        input="""number a
+        number k <- 300
+        number p <- 200
+
+        string str <- "Anh cho em mua xuan"
+
+
+        dynamic dynamite <- "BTS"..."Bangtang Boys"
+        bool check <- not not (not true) and not false or true or false or (30 <= 9) and (30>90) >70 and (("con cho" != "con ngua") = ("Beo phi" == "map dit"))
+
+        bool compare <- (30e-7>20e20)
+
+        func main() return true
+
+        func abasalom(string str, number b)
+        begin
+
+        var a<- 3+7 
+
+        var b<- 6+9-10-20/30%15
+        end
+
+
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,216))
 
     
 
