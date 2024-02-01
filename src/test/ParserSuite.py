@@ -312,8 +312,301 @@ end
         expect="successful"
         self.assertTrue(TestParser.test(input,expect,216))
 
-    
+    def test_17(self):
+        input="""
+        dynamic a <- 0
+        number b <- 199
+        number c <- 12.
+        var d <- 12.3
+        var e <- 12.3e1500000 - 3015
+        number f <- 12e-15 * 15 / 27
+        string str <- "Macbook Pro M1 \t\f"
+        func main(string a)
+        begin
+        ## comment
+        var a <- "str" ## this is a comment
+        ## this is a comment too >>>> <<<<<<<xxxxx
+        number a[5] <- [3+2/7*18%(32),30e-7-15,110.20e+15]
 
+
+        end
+        ## Cristiano Ronaldo is better than Lionel Messi
+
+        
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,217))
+
+
+    def test_18(self):
+        input="""
+        dynamic a <- 0
+        number b <- 199
+        number c <- 12.
+        var d <- 12.3
+        var e <- -12.3e1500000 - 3015
+        number f <- 12e-15 * 15 / 27 and (15<32) = 1
+
+        string frank_sinatra <- "fly me to the moon "..."lala\f" ##comment
+
+        bool check <- true and not false and not true or not false or ((32>10)>0) = true
+
+        bool boolean <- boo + bo + b
+
+        func main(string str[30,31,32,33,34,35], string str2[0]) return str[1,2,3,4,5,5]
+
+        string str[a[2]+1]
+        
+        """
+        expect="Error on line 17 col 19: a"
+        self.assertTrue(TestParser.test(input,expect,218))
+    
+    def test_19(self):
+        input="""func deck(number controller) begin
+        string str[2,2]<-[["con cho","con meo"],["con khi?","con chim"]]
+        if (a>7) 
+            if (a%2 = 0) printString("Even")
+            else printString("Odd")
+        elif (a>6) 
+            if (a%3 = 0) printString("multiple of 3")
+            else printString("Not multiple of 3")
+        else printString("haha")
+
+        str[foo+3/2*(30>1)*15, 100%30%35+10] <- "Con rong" ... "Nam My"
+        end 
+
+        func main(var arg) return 0       
+        """
+        expect="Error on line 14 col 18: var"
+        self.assertTrue(TestParser.test(input,expect,219))
+
+    def test_20(self):
+        input="""
+        string str <- "God of war"
+
+        string str = 3232  
+        """
+        expect="Error on line 4 col 19: ="
+        self.assertTrue(TestParser.test(input,expect,220))
+
+    def test_21(self):
+        input="""
+        string str <- "God of war"
+
+        var x <- a[1+2,15/32*4] + -32 * 45 + not true
+
+        dynamic a[3,2]
+        """
+        expect="Error on line 6 col 17: ["
+        self.assertTrue(TestParser.test(input,expect,221))
+
+    def test_22(self):
+        input="""
+        string str <- "God of war"
+
+        var x <- a[1+2,15/32*4] + -32 * 45 + not true
+
+        func superman() begin
+        var a[3,2] <- [[1,2],[3,4],[5,6]]
+        end        
+        """
+        expect="Error on line 7 col 13: ["
+        self.assertTrue(TestParser.test(input,expect,222))
+
+    def test_23(self):
+        input="""
+        func foo(number a[5], string b)
+        begin
+        var i <- 0
+        for i until i >=5 by 1
+        begin
+        a[i] <- i*i+5
+        end
+        return -1
+        end        
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,223))
+
+    def test_24(self):
+        input="""
+        func isPrime(number x)
+        begin
+            if (x<=1) return false
+            var i <- 2
+            for i until i>x/2 by 2
+            begin
+                if (x%i = 0)
+                begin
+                    printString("Break")
+                    break
+                end
+            end 
+        return true
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,224))
+
+    def test_25(self):
+        input="""
+        func isPrime(number x)
+        begin
+            if (x<=1) return false
+            var i <- 2*5-32+1/17
+            a[3+foo(2)] <- a[b[2,3]]+4
+            foo(a[3]+7*25, "string")
+            for i until i>x/2 by 2
+            begin
+                if (x%i = 0)
+                begin
+                    printString("Break")
+                    break
+                end
+            end 
+        return true
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,225))
+
+    def test_25(self):
+        input="""
+        func isPrime(number x)
+        begin
+            if (x<=1) return false
+            var i <- 2*5-32+1/17
+            a[3+foo(2)] <- a[b[2,3]]+4
+            foo(a[3]+7*25, "string")
+            for i until i>x/2 by 2
+            begin
+                if (x%i = 0)
+                begin
+                    printString("Break")
+                    break
+                end
+            end 
+        return true
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,225))
+
+    def test_26(self):
+        input="""
+        func main(string arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i >10) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,226))
+
+    def test_27(self):
+        input="""
+        func main(var arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i >10) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 18: var"
+        self.assertTrue(TestParser.test(input,expect,227))
+
+    def test_28(self):
+        input="""
+        func main(var arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i >10) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 18: var"
+        self.assertTrue(TestParser.test(input,expect,228))
+
+    def test_29(self):
+        input="""
+        func static main(var arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i >10) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 20: main"
+        self.assertTrue(TestParser.test(input,expect,229))
+
+    def test_30(self):
+        input="""
+        func static main(var arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i >10) break
+            else printString("Le Festin")
+        end
+
+        callfunc()
+        end      
+        """
+        expect="Error on line 2 col 20: main"
+        self.assertTrue(TestParser.test(input,expect,230))
+
+    def test_31(self):
+        input="""
+        func true(var arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i >10) break
+            else printString("Le Festin")
+        end
+
+        callfunc()
+        end      
+        """
+        expect="Error on line 2 col 13: true"
+        self.assertTrue(TestParser.test(input,expect,231))
+
+    def test_32(self):
+        input="""
+        func main(number arg)
+        begin
+        for bool until bool!=30 by 1 begin
+            if (i = 3) continue
+            if (i >10) break
+            else printString("Le Festin")
+        end
+
+        callfunc()
+        end      
+        """
+        expect="Error on line 4 col 12: bool"
+        self.assertTrue(TestParser.test(input,expect,232))
+
+    def test_33(self):
+        input="""
+        func main(number arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i >) break
+            else printString("Le Festin")
+        end
+
+        callfunc()
+        end      
+        """
+        expect="Error on line 6 col 19: )"
+        self.assertTrue(TestParser.test(input,expect,233))
 
     
     

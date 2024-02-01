@@ -1,9 +1,9 @@
 
         func main(number arg)
         begin
-        for bool until bool!=30 by 1 begin
+        for i until i!=30 by 1 begin
             if (i = 3) continue
-            if (i >10) break
+            if (i >) break
             else printString("Le Festin")
         end
 
