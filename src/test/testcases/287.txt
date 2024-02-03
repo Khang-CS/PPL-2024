@@ -1,0 +1,10 @@
+
+        func foo2(number x, string str, number a[254])
+        func foo1(number x) return [1,2,3,4,5]
+        func main(number x) begin
+
+        foo(3)[14] <- 32
+        fallInLove("Em dang buon buon buon, buon hay vui")[true, false, true, not false] <- not false and true and not false and 125>232 or (322 = 110)
+        
+        end  
+        

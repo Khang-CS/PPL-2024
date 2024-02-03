@@ -1,0 +1,9 @@
+
+        number abc <- 123456
+
+        string abc = 123
+
+        func superman() begin
+        number a[3,2] <- [[1,2],[3,4],[5,6]]
+        end        
+        

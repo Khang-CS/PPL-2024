@@ -1,0 +1,18 @@
+func main()
+        begin
+            if (a > 8) printString("32")
+
+            elif (a > 6) printString("hehe")
+
+            elif (a = 62) readString() ## else return 321
+
+            var z <- (120 >= 220) > 102 + 125 + (not fun) % 12e-25
+            begin
+                printString("Demcia")
+                begin
+                    begin
+                    end
+                end
+            end
+        end
+        

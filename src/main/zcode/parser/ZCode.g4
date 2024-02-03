@@ -21,7 +21,7 @@ decllist: decl decllist | decl;
 
 decl: func | var_init;
 
-var_init: newline_list vardecl (ASSIGNOP exp)? newline_prime;
+var_init: newline_list vardecl newline_prime;
 
 func:
 	newline_list FUNC IDENTIFIER LB paramlist RB newline_list option;
@@ -56,13 +56,13 @@ standalone_stmt: newline_list stmt newline_prime;
 
 vardecl: (normaldecl | arraydecl);
 
-vardecllist: declprime |;
+normaldecl: (normaltype | implicittype) IDENTIFIER (ASSIGNOP exp)?;
 
-declprime: vardecl COMMA declprime | vardecl;
+arraydecl:
+	normaltype IDENTIFIER LP dimensions RP (ASSIGNOP arrayvalue)?;
 
-normaldecl: (normaltype | implicittype) IDENTIFIER;
-
-arraydecl: normaltype IDENTIFIER LP dimensions RP;
+arrayvalue: LP array_value_list RP;
+array_value_list: exp COMMA array_value_list | exp;
 
 dimensions: NUMLIT COMMA dimensions | NUMLIT;
 
@@ -74,7 +74,7 @@ implicittype: DYNAMIC | VAR;
 assign_stmt: lhs ASSIGNOP exp;
 //
 
-lhs: IDENTIFIER | scalar_index_exp | arraydecl | normaldecl;
+lhs: IDENTIFIER | scalar_index_exp;
 
 indexexp: scalar_index_exp | funccal_index_exp;
 
@@ -113,13 +113,10 @@ exp9:
 	NUMLIT
 	| BOOLLIT
 	| STRINGLIT
-	| arrayvalue
 	| IDENTIFIER
 	| funccall_stmt
-	| LB exp RB;
-
-arrayvalue: LP array_value_list RP;
-array_value_list: exp COMMA array_value_list | exp;
+	| LB exp RB
+	| arrayvalue;
 
 // function call statement
 funccall_stmt: (IDENTIFIER LB explist RB) | io_func;
@@ -131,8 +128,7 @@ expprime: exp COMMA expprime | exp;
 //
 
 // if statement
-if_stmt:
-	IF LB exp RB newline_list stmt elif_stmt_list else_stmt;
+if_stmt: IF exp newline_list stmt elif_stmt_list else_stmt;
 
 elif_stmt_list: newline_prime elif_stmt_prime |;
 
@@ -140,7 +136,7 @@ elif_stmt_prime:
 	elif_stmt newline_prime elif_stmt_prime
 	| elif_stmt;
 
-elif_stmt: ELIF LB exp RB newline_list stmt;
+elif_stmt: ELIF exp newline_list stmt;
 
 else_stmt: newline_prime else_stmt_prime |;
 
@@ -161,7 +157,7 @@ continue_stmt: CONTINUE;
 // 
 
 //return statement
-return_stmt: RETURN exp;
+return_stmt: RETURN exp?;
 //
 
 //block statement

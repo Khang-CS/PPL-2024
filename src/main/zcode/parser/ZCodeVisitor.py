@@ -89,16 +89,6 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#vardecllist.
-    def visitVardecllist(self, ctx:ZCodeParser.VardecllistContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#declprime.
-    def visitDeclprime(self, ctx:ZCodeParser.DeclprimeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by ZCodeParser#normaldecl.
     def visitNormaldecl(self, ctx:ZCodeParser.NormaldeclContext):
         return self.visitChildren(ctx)
@@ -106,6 +96,16 @@ class ZCodeVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ZCodeParser#arraydecl.
     def visitArraydecl(self, ctx:ZCodeParser.ArraydeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ZCodeParser#arrayvalue.
+    def visitArrayvalue(self, ctx:ZCodeParser.ArrayvalueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ZCodeParser#array_value_list.
+    def visitArray_value_list(self, ctx:ZCodeParser.Array_value_listContext):
         return self.visitChildren(ctx)
 
 
@@ -196,16 +196,6 @@ class ZCodeVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ZCodeParser#exp9.
     def visitExp9(self, ctx:ZCodeParser.Exp9Context):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#arrayvalue.
-    def visitArrayvalue(self, ctx:ZCodeParser.ArrayvalueContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#array_value_list.
-    def visitArray_value_list(self, ctx:ZCodeParser.Array_value_listContext):
         return self.visitChildren(ctx)
 
 

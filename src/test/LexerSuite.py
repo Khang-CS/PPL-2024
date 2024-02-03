@@ -179,6 +179,15 @@ class LexerSuite(unittest.TestCase):
 
     """---------Multiple Test----------"""
 
+    def test_95(self):
+        self.assertTrue(TestLexer.test("\" \\'\" \"", " \\',Unclosed String: ", 95))
+    def test_96(self):
+        self.assertTrue(TestLexer.test(""" "\\'" """, "\\',<EOF>", 96))
+    def test_97(self):
+        self.assertTrue(TestLexer.test(""" "'" """, "Unclosed String: '\" ", 97))
+        
+        
+
     def test_98(self):
         test="""func main()
         begin

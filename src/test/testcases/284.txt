@@ -1,0 +1,24 @@
+number abvcvc
+        number k <- 30045454
+        number p <- 20054545
+
+        string str <- "Bao tien mot mo binh yen"
+
+
+        dynamic dynamite <- "BigBang"..."VIP"
+        bool check <- not not (not false) and not true or false or true or (300 <= 90) and (30 > 90) > 70 and (("con meo" != "con su tu") = ("Om" == "thin"))
+
+        bool compare <- (30e-7>20e20)
+
+        func main() return true
+
+        func ya(string str, number b)
+        begin
+
+        var a<- 3+7 
+
+        var b<- 61+92-120-220/320%125
+        end
+
+
+        

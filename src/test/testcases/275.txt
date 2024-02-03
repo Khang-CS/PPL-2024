@@ -1,0 +1,19 @@
+
+        func isPrime1(number x)
+        begin
+            if (x<=1) return false
+            number a[4] <- [1, 2, 3, 4]
+            a[0] <- 1
+            a[foo(2)..."abc"] <- "2"
+            
+            for i until i > x/2 by 2
+            begin
+                if (x%i = 0)
+                begin
+                    printString("Break")
+                    break
+                end
+            end 
+        return true
+        end      
+        

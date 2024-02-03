@@ -1,0 +1,11 @@
+
+        func foo(dynamic a)
+            begin
+                var i <- 0
+                for i until i >= 5 by 2
+                    begin
+                        a[i] <- i * i - 5
+                    end
+                return -1
+            end        
+        

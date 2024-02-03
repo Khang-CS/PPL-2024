@@ -964,9 +964,6 @@ end
         a[5] <- foo(3)[16*9+32]-5
         foo(3)[14] <- 32
         fallInLove("Nam nam roi khong gap, tu khi em lay chong")[true, false, true, not false] <- not true and false and not false and 15>32 or (32 = 10)
-
-        
-        
         end  
         """
         expect="Error on line 6 col 14: ["
@@ -975,15 +972,134 @@ end
     def test_59(self):
         input = """func main(number x)
             begin
+                number a <- 15 
                 number a <- [1, 2, 3, 4, 5]
+                
                 var i <- 2
                 for i until i > x / 2 by 1
                     writeNumber(i)
             end
         """
-        expect = "Error on line 3 col 28: ["
+        expect = "successful"
         self.assertTrue(TestParser.test(input, expect, 259))
+
+    def test_60(self):
+        input = """func main(number x)
+            begin
+                number a <- 15 
+                number a <- [1, 2, 3, 4, 5]
+                begin
+                    number b <- [1,2,3,4,5] * 32 ... "Frenkie De Jong" + 0.10e-32
+                end
+                
+                var i <- 2
+                for i until i > x / 2 by 1
+                    writeNumber(i)
+            end
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 260))
     
+    def test_61(self):
+        input = """number global_x <- 32*19+38 - [1,2,3,4,5,[1,2,3,5]]
+        var _number <- 3*9+1
+        
+        func main(number x)            
+            begin
+                number a <- 15 
+                number a <- [1, 2, 3, 4, 5]
+                begin
+                    number b <- [1,2,3,4,5] * 32 ... "Frenkie De Jong" + 0.10e-32
+                end
+                
+                var i <- 2
+                for i until i > x / 2 by 1
+                    writeNumber(i)
+                number arrayNumber[19*23,15]
+            end
+        """
+        expect = "Error on line 15 col 37: *"
+        self.assertTrue(TestParser.test(input, expect, 261))
+
+    def test_62(self):
+        input = """number global_x <- 32*19+38 - [1,2,3,4,5,[1,2,3,5]]
+        var _number <- 3*9+1
+        string Barcelona_squad[11]<-["Robert Lewandowski","Raphinha","Joao Felix","Gavi","Pedri","Frenkie De Jong","Ronald Araujo","Jules Kounde","Alejandro Balde","Sergio Roberto","Ter Stegen"]
+
+        string RealMadrid_squad[11]<-["Joselu","Vinicius Jr","Jude Bellingham","Federico Valverde","Edouardo Carmavinga","Tchouchameni","David Alaba","Antonio Rudiger","Dani Carvajal","Ferland Mendy","Andriy Lunin"]
+
+        string matchResult <- RealMadrid ... "4-1" ...Barcelona
+
+        """
+        expect = "Error on line 7 col 51: ..."
+        self.assertTrue(TestParser.test(input, expect, 262))
+
+    def test_63(self):
+        input = """
+        func manUtd(string manUtd_mem[11,3]) begin
+        for i until i<11 by 1
+        begin
+        if (manUtd_mem[0] == "Bruno Fernandes") printString("Captain")
+        elif (manUtd_mem[1] == "Andre Onana") printString("chu be ngu")
+        elif (manUtd_mem[2] == "Marcus Rashford") printString("Tien Si")
+        elif (manUtd_mem[3] == "Alenjandro Garnacho")
+            if(manUtd_mem[3,0] == "Goal") printString("Siuuuu 7777")
+            elif(manUtd_mem[3,0] == "Miss") printString("Kim Ri Con")
+            else
+                if(manUtd_mem[3,1] == "Assist" and manUtd[3,1] = 12) manUtd_mem[3] <- manUtd_mem[3] ... "bay hut"
+                else printString("haha")
+        end
+        end
+
+        """
+        expect = "Error on line 12 col 63: ="
+        self.assertTrue(TestParser.test(input, expect, 263))
+
+    def test_64(self):
+        input = """
+        func manUtd(string manUtd_mem[11,3]) begin
+        for i until i<11 by 1
+        begin
+        if (manUtd_mem[0] == "Bruno Fernandes") printString("Captain")
+        elif (manUtd_mem[1] == "Andre Onana") printString("chu be ngu")
+        elif (manUtd_mem[2] == "Marcus Rashford") printString("Tien Si")
+        elif (manUtd_mem[3] == "Alenjandro Garnacho")
+            if(manUtd_mem[3,0] == "Goal") printString("Siuuuu 7777")
+            elif(manUtd_mem[3,0] == "Miss") printString("Kim Ri Con")
+            else
+                if(manUtd_mem[3,1] == "Assist" and (manUtd = 12))
+                    if(x = 12) print(x)
+                    elif (x = 12+12)
+                        if(x = 32*32+7) print(st) 
+                    else print(f)
+                else printString("haha")
+        end
+        end
+
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 264))
+    
+    def test_65(self):
+        input = """    
+        func a()
+            return 
+        var a <- []
+        """
+        expect = "Error on line 4 col 18: ]"
+        self.assertTrue(TestParser.test(input, expect, 265))
+
+    def test_66(self):
+        input = """ 
+            var Khanh <- a[1] + 1
+            var Khanh <- array[1,1+2][1]
+            var Khanh <- array[1,(1)...2,array[ar[(1*2) and 1]],array[2]]
+            var Khanh <- a[1] + fun()[1,fun()] 
+            var Khanh <- 1[1]
+        """
+        expect = "Error on line 3 col 37: ["
+        self.assertTrue(TestParser.test(input, expect, 266))
+
 
 
     
