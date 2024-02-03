@@ -172,7 +172,7 @@ io_func:
 	readNumber
 	| writeNumber
 	| readBool
-	| write
+	| writeBool
 	| readString
 	| writeString;
 
@@ -182,7 +182,7 @@ writeNumber: 'writeNumber' LB exp RB;
 
 readBool: 'readBool' LB RB;
 
-write: 'write' LB exp RB;
+writeBool: 'writeBool' LB exp RB;
 
 readString: 'readString' LB RB;
 

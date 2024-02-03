@@ -608,6 +608,374 @@ end
         expect="Error on line 6 col 19: )"
         self.assertTrue(TestParser.test(input,expect,233))
 
+    def test_34(self):
+        input="""
+        func main(number arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+
+        a <- b
+
+        for i until i <49 by 2+3+4*15/32 foo(true,false, not false)
+
+        if (a) callfunc(3)
+        
+        elif (not a) callfunc(2)
+
+        else callfunc(1)
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,234))
+
+    def test_35(self):
+        input="""
+        func string(number arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 13: string"
+        self.assertTrue(TestParser.test(input,expect,235))
+
+    def test_36(self):
+        input="""
+        func not(number arg)
+        begin
+        for i until i!=30 by 1 begin
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 13: not"
+        self.assertTrue(TestParser.test(input,expect,236))
+
+    def test_37(self):
+        input="""
+        func f(number arg)
+        begin
+        for dynamic until dynamic!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 4 col 12: dynamic"
+        self.assertTrue(TestParser.test(input,expect,237))
+
+    def test_38(self):
+        input="""
+        func f(number arg)
+        begin
+        for i until dynamic!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 4 col 20: dynamic"
+        self.assertTrue(TestParser.test(input,expect,238))
+
+    def test_39(self):
+        input="""
+        func func(number arg)
+        begin
+        for i until dynamic!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+        end      
+        """
+        expect="Error on line 2 col 13: func"
+        self.assertTrue(TestParser.test(input,expect,239))
+
+    def test_40(self):
+        input="""
+        func main(number arg)
+        begin
+        for i until i!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+
+        var false <- a
+        end      
+        """
+        expect="Error on line 11 col 12: false"
+        self.assertTrue(TestParser.test(input,expect,240))
+
+    def test_41(self):
+        input="""
+        func main(number arg)
+        begin
+        for i until i!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+
+        var variable <- true + false + not foo(3)
+        end      
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,241))
+
+    def test_42(self):
+        input="""
+        func notMain(number a, string b) break
+        func main(number arg)
+        begin
+        for i until i!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+
+        var variable <- true + false + not foo(3)
+        end      
+        """
+        expect="Error on line 2 col 41: break"
+        self.assertTrue(TestParser.test(input,expect,242))
+
+    def test_43(self):
+        input="""
+        func notMain(number a, string b) begin
+        begin
+        begin
+        begin
+        end
+        end        
+        end
+
+        func main(number arg)
+        begin
+        for i until i!=30 by 1*9/30-15%2 begin
+
+            if (i = 3) continue
+            if (i > 1) break
+            else printString("Le Festin")
+        end
+
+        var variable <- true + false + not foo(3)
+        end      
+        """
+        expect="Error on line 10 col 8: func"
+        self.assertTrue(TestParser.test(input,expect,243))
+
+    def test_44(self):
+        input="""
+        func rose(string str) return "Nao dau ai muon quen"     
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,244))
+
+    def test_45(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string str <- "when i look i to your eyes"
+
+        string str <- "i can see the love restrained" 
+        end     
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,245))
+
+    def test_46(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string str <- "when i look i to your eyes"
+
+        string str <- "i can see the love restrained" 
+
+        number f <- func(35*10+9-323/71%83)
+        end     
+        """
+        expect="Error on line 9 col 20: func"
+        self.assertTrue(TestParser.test(input,expect,246))
+
+    def test_47(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string str1<- "when i look i to your eyes"
+
+        string str2 <- "i can see the love restrained" 
+
+
+
+        number f <- funcMain(35*10+9-323/71%83)
+
+        if (if>7) return 1
+        end     
+        """
+        expect="Error on line 13 col 12: if"
+        self.assertTrue(TestParser.test(input,expect,247))
+
+    def test_48(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- writeString()
+        end     
+        """
+        expect="Error on line 5 col 32: )"
+        self.assertTrue(TestParser.test(input,expect,248))
+
+    def test_49(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- readNumber(3*7)
+        end     
+        """
+        expect="Error on line 5 col 31: 3"
+        self.assertTrue(TestParser.test(input,expect,249))
+
+    def test_50(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- readBool(true)
+        end     
+        """
+        expect="Error on line 5 col 29: true"
+        self.assertTrue(TestParser.test(input,expect,250))
+
+    def test_51(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- writeBool()
+        end     
+        """
+        expect="Error on line 5 col 30: )"
+        self.assertTrue(TestParser.test(input,expect,251))
+
+    def test_52(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- readString(arg)
+        end     
+        """
+        expect="Error on line 5 col 31: arg"
+        self.assertTrue(TestParser.test(input,expect,252))
+
+    def test_53(self):
+        input="""
+        func axl_Rose(string str) return "guns\' n\' roses"
+
+        func main() begin
+        string f <- writeString()
+        end     
+        """
+        expect="Error on line 5 col 32: )"
+        self.assertTrue(TestParser.test(input,expect,253))
+
+    def test_54(self):
+        input="""
+        func main(string str) <- 3*3+3   
+        """
+        expect="Error on line 2 col 30: <-"
+        self.assertTrue(TestParser.test(input,expect,254))
+
+    def test_55(self):
+        input="""
+        func main(string str) begin
+        bool c <- 32>10>8
+        end  
+        """
+        expect="Error on line 3 col 23: >"
+        self.assertTrue(TestParser.test(input,expect,255))
+
+    def test_56(self):
+        input="""
+        func main(string str) begin
+        bool c <- (32>10)>8 and true
+        for a until a<39 and true or false by 1*39+27-15
+        printString("haha")
+        end  
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,256))
+
+    def test_57(self):
+        input="""
+        func main(string str) begin
+        bool c <- (32>10)>8 and true
+        for a until a<39 and true or false or true and ("con"..."cho" == "con cho") or (69%2!=0) by 1*39+27-15
+        begin
+        printString("haha")
+        end
+        end  
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,257))
+
+    def test_58(self):
+        input="""
+        func main(string str) begin
+        bool c <- (32>10)>8 and true
+        for a until a<39 and true or false or true and ("con"..."cho" == "con cho") or (69%2!=0) by 1*39+27-15
+        begin
+            for b until a == "Ronaldo" by 13
+            print(x)
+        end
+        end  
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,258))
+
+    def test_59(self):
+        input="""
+        func foo2(number x, string str, number a[3000])
+        func foo1(number x) return [1,2,3,4,5]
+        func main(number x) begin
+
+        foo(3)[14] <- 32
+        fallInLove("Nam nam roi khong gap, tu khi em lay chong")[true, false, true, not false] <- not true and false and not false and 15>32 or (32 = 10)
+        
+        end  
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,259))
+    
+
+
+    
+
+    
+
     
     
 

@@ -3,7 +3,7 @@ null
 'readNumber'
 'writeNumber'
 'readBool'
-'write'
+'writeBool'
 'readString'
 'writeString'
 null
@@ -177,7 +177,7 @@ io_func
 readNumber
 writeNumber
 readBool
-write
+writeBool
 readString
 writeString
 

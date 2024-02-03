@@ -299,8 +299,8 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#write.
-    def visitWrite(self, ctx:ZCodeParser.WriteContext):
+    # Visit a parse tree produced by ZCodeParser#writeBool.
+    def visitWriteBool(self, ctx:ZCodeParser.WriteBoolContext):
         return self.visitChildren(ctx)
 
 

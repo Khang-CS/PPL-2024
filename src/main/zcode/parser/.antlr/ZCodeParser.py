@@ -187,7 +187,7 @@ class ZCodeParser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'readNumber'", "'writeNumber'", "'readBool'", 
-                     "'write'", "'readString'", "'writeString'", "<INVALID>", 
+                     "'writeBool'", "'readString'", "'writeString'", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "'true'", "'false'", "'number'", "'bool'", "'string'", 
                      "'return'", "'var'", "'dynamic'", "'func'", "'for'", 
@@ -268,7 +268,7 @@ class ZCodeParser ( Parser ):
     RULE_readNumber = 55
     RULE_writeNumber = 56
     RULE_readBool = 57
-    RULE_write = 58
+    RULE_writeBool = 58
     RULE_readString = 59
     RULE_writeString = 60
 
@@ -284,7 +284,7 @@ class ZCodeParser ( Parser ):
                    "elif_stmt", "else_stmt", "else_stmt_prime", "for_stmt", 
                    "break_stmt", "continue_stmt", "return_stmt", "block_stmt", 
                    "stmtlist", "stmtprime", "io_func", "readNumber", "writeNumber", 
-                   "readBool", "write", "readString", "writeString" ]
+                   "readBool", "writeBool", "readString", "writeString" ]
 
     EOF = Token.EOF
     T__0=1
@@ -3436,8 +3436,8 @@ class ZCodeParser ( Parser ):
             return self.getTypedRuleContext(ZCodeParser.ReadBoolContext,0)
 
 
-        def write(self):
-            return self.getTypedRuleContext(ZCodeParser.WriteContext,0)
+        def writeBool(self):
+            return self.getTypedRuleContext(ZCodeParser.WriteBoolContext,0)
 
 
         def readString(self):
@@ -3480,7 +3480,7 @@ class ZCodeParser ( Parser ):
             elif token in [4]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 444
-                self.write()
+                self.writeBool()
                 pass
             elif token in [5]:
                 self.enterOuterAlt(localctx, 5)
@@ -3630,7 +3630,7 @@ class ZCodeParser ( Parser ):
         return localctx
 
 
-    class WriteContext(ParserRuleContext):
+    class WriteBoolContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -3648,15 +3648,15 @@ class ZCodeParser ( Parser ):
             return self.getToken(ZCodeParser.RB, 0)
 
         def getRuleIndex(self):
-            return ZCodeParser.RULE_write
+            return ZCodeParser.RULE_writeBool
 
 
 
 
-    def write(self):
+    def writeBool(self):
 
-        localctx = ZCodeParser.WriteContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 116, self.RULE_write)
+        localctx = ZCodeParser.WriteBoolContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 116, self.RULE_writeBool)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 462
