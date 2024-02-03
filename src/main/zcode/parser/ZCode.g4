@@ -74,9 +74,12 @@ implicittype: DYNAMIC | VAR;
 assign_stmt: lhs ASSIGNOP exp;
 //
 
-lhs: IDENTIFIER | indexexp | arraydecl | normaldecl;
+lhs: IDENTIFIER | scalar_index_exp | arraydecl | normaldecl;
 
-indexexp: (IDENTIFIER | funccall_stmt) LP index_operators RP;
+indexexp: scalar_index_exp | funccal_index_exp;
+
+scalar_index_exp: IDENTIFIER LP index_operators RP;
+funccal_index_exp: funccall_stmt LP index_operators RP;
 
 index_operators: exp COMMA index_operators | exp;
 

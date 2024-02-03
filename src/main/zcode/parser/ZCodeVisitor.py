@@ -139,6 +139,16 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ZCodeParser#scalar_index_exp.
+    def visitScalar_index_exp(self, ctx:ZCodeParser.Scalar_index_expContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ZCodeParser#funccal_index_exp.
+    def visitFunccal_index_exp(self, ctx:ZCodeParser.Funccal_index_expContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ZCodeParser#index_operators.
     def visitIndex_operators(self, ctx:ZCodeParser.Index_operatorsContext):
         return self.visitChildren(ctx)

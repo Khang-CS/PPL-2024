@@ -961,14 +961,28 @@ end
         func foo2(number x, string str, number a[3000])
         func foo1(number x) return [1,2,3,4,5]
         func main(number x) begin
-
+        a[5] <- foo(3)[16*9+32]-5
         foo(3)[14] <- 32
         fallInLove("Nam nam roi khong gap, tu khi em lay chong")[true, false, true, not false] <- not true and false and not false and 15>32 or (32 = 10)
+
+        
         
         end  
         """
-        expect="successful"
+        expect="Error on line 6 col 14: ["
         self.assertTrue(TestParser.test(input,expect,259))
+
+    def test_59(self):
+        input = """func main(number x)
+            begin
+                number a <- [1, 2, 3, 4, 5]
+                var i <- 2
+                for i until i > x / 2 by 1
+                    writeNumber(i)
+            end
+        """
+        expect = "Error on line 3 col 28: ["
+        self.assertTrue(TestParser.test(input, expect, 259))
     
 
 
