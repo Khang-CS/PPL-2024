@@ -844,7 +844,7 @@ end
         string f <- writeString()
         end     
         """
-        expect="Error on line 5 col 32: )"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,248))
 
     def test_49(self):
@@ -855,7 +855,7 @@ end
         string f <- readNumber(3*7)
         end     
         """
-        expect="Error on line 5 col 31: 3"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,249))
 
     def test_50(self):
@@ -866,7 +866,7 @@ end
         string f <- readBool(true)
         end     
         """
-        expect="Error on line 5 col 29: true"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,250))
 
     def test_51(self):
@@ -877,7 +877,7 @@ end
         string f <- writeBool()
         end     
         """
-        expect="Error on line 5 col 30: )"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,251))
 
     def test_52(self):
@@ -888,7 +888,7 @@ end
         string f <- readString(arg)
         end     
         """
-        expect="Error on line 5 col 31: arg"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,252))
 
     def test_53(self):
@@ -899,7 +899,7 @@ end
         string f <- writeString()
         end     
         """
-        expect="Error on line 5 col 32: )"
+        expect="successful"
         self.assertTrue(TestParser.test(input,expect,253))
 
     def test_54(self):
@@ -1099,6 +1099,131 @@ end
         """
         expect = "Error on line 3 col 37: ["
         self.assertTrue(TestParser.test(input, expect, 266))
+
+    def test_67(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... number
+        """
+        expect = "Error on line 2 col 45: number"
+        self.assertTrue(TestParser.test(input, expect, 267))
+
+    def test_68(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
+
+            func houseOfM(string arg, number arg, bool arg, string arg[10])
+            begin
+            if(30>9-42+7/38 and not false or true)
+                if(30>9-42+7/38 and not false or true)
+                    if(30>9-42+7/38 and not false or true - "Kim So Huyn")
+                        if(30>9-42+7/38 and not false or true) number[a[32]] <- 7/2/2002
+                        else callfunc_x_y_z()
+            end
+        """
+        expect = "Error on line 9 col 69: ["
+        self.assertTrue(TestParser.test(input, expect, 268))
+
+    def test_69(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
+
+            func houseOfM(string arg, number arg, bool arg, string arg[10])
+            begin
+            func main() begin
+
+            end
+            end
+        """
+        expect = "Error on line 6 col 12: func"
+        self.assertTrue(TestParser.test(input, expect, 269))
+
+    def test_70(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
+
+            func houseOfM(string arg, number arg, bool arg, string arg[10])
+            begin
+            continue
+            break
+            for iterator until iterator >100 by haha
+                continue
+            end
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 270))
+
+    def test_71(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
+
+            func houseOfM(string arg, number arg, bool arg, string arg[10])
+            begin
+            continue
+            break
+            for iterator until iterator >100 by haha
+                continue
+            break
+            end
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 271))
+
+    def test_72(self):
+        input = """ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
+            string road[2,foo(30)]
+        """
+        expect = "Error on line 3 col 26: foo"
+        self.assertTrue(TestParser.test(input, expect, 272))
+
+    def test_73(self):
+        input = """func main()
+        begin
+        string c <- "\mmmp"
+        end
+        """
+        expect = '\m'
+        self.assertTrue(TestParser.test(input,expect,273))
+
+    def test_74(self):
+        input = """func main()
+        begin end
+        """
+        expect = 'Error on line 2 col 14: end'
+        self.assertTrue(TestParser.test(input,expect,274))
+
+    def test_75(self):
+        input = """func main()
+        func sadBoy()
+
+
+
+
+
+
+
+        func fallInLove() func withYou()
+        """
+        expect = 'Error on line 10 col 26: func'
+        self.assertTrue(TestParser.test(input,expect,275))
+
+    def test_76(self):
+        input = """
+            number b[5] <- "summer is for falling in love"
+        """
+        expect = 'successful'
+        self.assertTrue(TestParser.test(input,expect,275))
+
+    def test_77(self):
+        input = """
+            number b[5] <- "summer is for falling in love"
+
+            if(a)
+            var b[37] <- "x"
+        """
+        expect = 'Error on line 4 col 12: if'
+        self.assertTrue(TestParser.test(input,expect,277))
+
 
 
 

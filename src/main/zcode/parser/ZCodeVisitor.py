@@ -69,11 +69,6 @@ class ZCodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ZCodeParser#optionprime.
-    def visitOptionprime(self, ctx:ZCodeParser.OptionprimeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by ZCodeParser#stmt.
     def visitStmt(self, ctx:ZCodeParser.StmtContext):
         return self.visitChildren(ctx)
@@ -276,41 +271,6 @@ class ZCodeVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ZCodeParser#stmtprime.
     def visitStmtprime(self, ctx:ZCodeParser.StmtprimeContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#io_func.
-    def visitIo_func(self, ctx:ZCodeParser.Io_funcContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#readNumber.
-    def visitReadNumber(self, ctx:ZCodeParser.ReadNumberContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#writeNumber.
-    def visitWriteNumber(self, ctx:ZCodeParser.WriteNumberContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#readBool.
-    def visitReadBool(self, ctx:ZCodeParser.ReadBoolContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#writeBool.
-    def visitWriteBool(self, ctx:ZCodeParser.WriteBoolContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#readString.
-    def visitReadString(self, ctx:ZCodeParser.ReadStringContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ZCodeParser#writeString.
-    def visitWriteString(self, ctx:ZCodeParser.WriteStringContext):
         return self.visitChildren(ctx)
 
 

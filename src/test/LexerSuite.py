@@ -178,6 +178,10 @@ class LexerSuite(unittest.TestCase):
         self.assertTrue(TestLexer.test(test,expect,142))
 
     """---------Multiple Test----------"""
+    def test_94(self):
+        input= """ \" \\\\\\ \" """
+        expect="""Illegal Escape In String:  \\\\\\ """
+        self.assertTrue(TestLexer.test(input,expect,194))
 
     def test_95(self):
         self.assertTrue(TestLexer.test("\" \\'\" \"", " \\',Unclosed String: ", 95))

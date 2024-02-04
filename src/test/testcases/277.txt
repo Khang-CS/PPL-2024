@@ -1,7 +1,6 @@
 
-        func axl_Rose(string str) return "guns' n' roses"
+            number b[5] <- "summer is for falling in love"
 
-        func main() begin
-        string f <- writeString()
-        end     
+            if(a)
+            var b[37] <- "x"
         

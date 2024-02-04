@@ -1,7 +1,12 @@
+ 
+            string yeezy <- "Kayne West" ... "Kim Kardashian"
 
-        number abc[12.9] <- 123456
-
-        func superman() begin
-        number a[3,2] <- [[1,2],[3,4],[5,6]]
-        end        
+            func houseOfM(string arg, number arg, bool arg, string arg[10])
+            begin
+            continue
+            break
+            for iterator until iterator >100 by haha
+                continue
+            break
+            end
         

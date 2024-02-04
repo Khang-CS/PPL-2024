@@ -24,7 +24,10 @@ decl: func | var_init;
 var_init: newline_list vardecl newline_prime;
 
 func:
-	newline_list FUNC IDENTIFIER LB paramlist RB newline_list option;
+	newline_list FUNC IDENTIFIER LB paramlist RB (
+		newline_list option
+		| newline_prime
+	);
 
 param: scala_param | arraydecl;
 
@@ -34,10 +37,7 @@ paramlist: paramprime |;
 
 paramprime: param COMMA paramprime | param;
 
-option: optionprime |;
-optionprime:
-	(return_stmt newline_prime)
-	| (block_stmt newline_prime);
+option: return_stmt newline_prime | block_stmt newline_prime;
 
 //stmt list
 stmt:
@@ -59,7 +59,7 @@ vardecl: (normaldecl | arraydecl);
 normaldecl: (normaltype | implicittype) IDENTIFIER (ASSIGNOP exp)?;
 
 arraydecl:
-	normaltype IDENTIFIER LP dimensions RP (ASSIGNOP arrayvalue)?;
+	normaltype IDENTIFIER LP dimensions RP (ASSIGNOP exp)?;
 
 arrayvalue: LP array_value_list RP;
 array_value_list: exp COMMA array_value_list | exp;
@@ -119,7 +119,7 @@ exp9:
 	| arrayvalue;
 
 // function call statement
-funccall_stmt: (IDENTIFIER LB explist RB) | io_func;
+funccall_stmt: (IDENTIFIER LB explist RB);
 //
 
 explist: expprime |;
@@ -161,31 +161,27 @@ return_stmt: RETURN exp?;
 //
 
 //block statement
-block_stmt: BEGIN newline_list stmtlist END;
+block_stmt: BEGIN newline_prime stmtlist END;
 stmtlist: stmtprime |;
 stmtprime: standalone_stmt stmtprime | standalone_stmt;
 //
 
-// IO
-io_func:
-	readNumber
-	| writeNumber
-	| readBool
-	| writeBool
-	| readString
-	| writeString;
+// IO io_func: readNumber | writeNumber | readBool | writeBool | readString | writeString;
 
-readNumber: 'readNumber' LB RB;
+// readNumber: 'readNumber' LB RB;
 
-writeNumber: 'writeNumber' LB exp RB;
+// writeNumber: 'writeNumber' LB exp RB;
 
-readBool: 'readBool' LB RB;
+// readBool: 'readBool' LB RB;
 
-writeBool: 'writeBool' LB exp RB;
+// writeBool: 'writeBool' LB exp RB;
 
-readString: 'readString' LB RB;
+// readString: 'readString' LB RB;
 
-writeString: 'writeString' LB exp RB;
+// writeString: 'writeString' LB exp RB;
+// 
+//
+// 
 //
 
 // LEXICAL ANALYSIS 
@@ -245,9 +241,139 @@ ELSE: 'else';
 ELIF: 'elif';
 BEGIN: 'begin';
 END: 'end';
-NOT: 'not'; // OPERATOR not
-AND: 'and'; // OPERATOR and
-OR: 'or'; // OPERATOR or
+NOT: 'not';
+// OPERATOR not
+AND: 'and';
+// OPERATOR and
+OR: 'or';
+// OPERATOR or
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
+//
+// 
 //
 
 // OPERATORS
@@ -280,7 +406,9 @@ IDENTIFIER: [A-Za-z_] [A-Za-z0-9_]*;
 
 COMMENT: '##' ~[\r\n]* -> skip;
 
-NEWLINE: '\n'; //NEWLINE
+NEWLINE: '\n';
+//NEWLINE
 
-WS: [ \t\r]+ -> skip; // skip spaces, tabs, newlines
+WS: [ \t\r]+ -> skip;
+// skip spaces, tabs, newlines
 ERROR_CHAR: . {raise ErrorToken(self.text)};
