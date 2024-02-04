@@ -2,10 +2,6 @@ import unittest
 from TestUtils import TestLexer
 
 class LexerSuite(unittest.TestCase):
-
-    
-
-      
     """IDENTIFIER TEST"""
     def test_1(self):
         self.assertTrue(TestLexer.test("book foo","book,foo,<EOF>",101))
@@ -187,11 +183,164 @@ class LexerSuite(unittest.TestCase):
         expect = """abc\\n def,<EOF>"""
         self.assertTrue(TestLexer.test(input, expect, 144))
 
+    def test_KeyWord_Operators_Separators(self):
+        """test KeyWord Operators Separators"""
+        
+        ##^ test KeyWord
+        input = "true false number bool string return var dynamic func for until by break continue if else elif begin end not and or"
+        expect = "true,false,number,bool,string,return,var,dynamic,func,for,until,by,break,continue,if,else,elif,begin,end,not,and,or,<EOF>"
+        self.assertTrue(TestLexer.test(input,expect,145))
+        
+        ##^ test Operators
+        input = "+-*/%= <- != < <= > >= ... =="
+        expect = "+,-,*,/,%,=,<-,!=,<,<=,>,>=,...,==,<EOF>"
+        self.assertTrue(TestLexer.test(input,expect,146))
+
+        ##^ test Separators
+        input = "[(,,)]"
+        expect = "[,(,,,,,),],<EOF>"
+        self.assertTrue(TestLexer.test(input,expect,147))
+        
+        ##^ test fail toán tử
+        input = "&"
+        expect = "Error Token &"
+        self.assertTrue(TestLexer.test(input,expect,148))
+        
+        input = "#"
+        expect = "Error Token #"
+        self.assertTrue(TestLexer.test(input,expect,149))
+        
+    def test_Identifiers(self):
+        """test Identifiers"""
+        ##^ test true ID
+        self.assertTrue(TestLexer.test("A _ a az AZ aZ _a a_ a1 _1 A1", "A,_,a,az,AZ,aZ,_a,a_,a1,_1,A1,<EOF>", 150))     
+
+        ##^ test false ID
+        self.assertTrue(TestLexer.test("1Tienc", "1,Tienc,<EOF>", 151))
+        self.assertTrue(TestLexer.test("11Tienc", "11,Tienc,<EOF>", 152))
+    
+    def test_Literal(self):
+        """test Identifiers"""   
+        
+        ##^ test NUMBER_LIT    
+        input = "0 -0 199 001 012. 12. 0. 12.3 12.3e3 12.3e-30 2.e3 0.e-30 31e+3 31e-3 0e+3 0e-3"
+        expect = "0,-,0,199,001,012.,12.,0.,12.3,12.3e3,12.3e-30,2.e3,0.e-30,31e+3,31e-3,0e+3,0e-3,<EOF>"
+        
+        self.assertTrue(TestLexer.test(input,expect,153))
+        ##^ fail NUMBER_LIT
+        self.assertTrue(TestLexer.test(".12e-3","Error Token .",154))
+        self.assertTrue(TestLexer.test("12.2h-3","12.2,h,-,3,<EOF>",155))
+        
+        ##^ test STRING_LIT 
+        input = """ "Vo  Tien" """ # kiểm tra bình thường
+        expect = "Vo  Tien,<EOF>"
+        self.assertTrue(TestLexer.test(input,expect,156))
+        self.assertTrue(TestLexer.test(""" "" """,",<EOF>",157)) # chuỗi rỗng
+        
+        ##^ kiểm tra các kí tự cho phép
+        input = """ "' \\b \\f \\r \\n \\t \\\\ Vo \\b \\f \\r \\n \\t \\\\  Tien \\b \\f \\r \\n \\t \\\\" """
+        expect = "' \\b \\f \\r \\n \\t \\\\ Vo \\b \\f \\r \\n \\t \\\\  Tien \\b \\f \\r \\n \\t \\\\,<EOF>"
+        self.assertTrue(TestLexer.test(input,expect,158))
+        self.assertTrue(TestLexer.test(""" "'"Vo '" Tien '' '"" ""","'\"Vo '\" Tien '' '\",<EOF>",159))
+        
+        ##^ kiểm tra lỗi Unclosed String
+        self.assertTrue(TestLexer.test(""" "Vo \n" """, "Unclosed String: Vo ", 160))
+        self.assertTrue(TestLexer.test(""" "Vo \n Tien" """, "Unclosed String: Vo ", 161))
+        self.assertTrue(TestLexer.test(""" "Vo  """, "Unclosed String: Vo  ", 162))
+        self.assertTrue(TestLexer.test(""" "Vo \\n \n """, "Unclosed String: Vo \\n ", 163))
+        self.assertTrue(TestLexer.test(""" "Vo ' \\n \\b """, "Unclosed String: Vo ' \\n \\b ", 164))
+        
+        ##^ kiểm tra lỗi Illegal Escape
+        self.assertTrue(TestLexer.test(""" "Tien ' \\1  """, "Illegal Escape In String: Tien ' \\1", 165))
+        self.assertTrue(TestLexer.test(""" "Tien \\2 \\n \n """, "Illegal Escape In String: Tien \\2", 166))
+        self.assertTrue(TestLexer.test(""" "Tien \\e \\n \\r """, "Illegal Escape In String: Tien \\e", 167))    
+
+        self.assertTrue(TestLexer.test(""" "Tien '" \\321 \\n \\r """, "Illegal Escape In String: Tien '\" \\3", 168))
+        
+        self.assertTrue(TestLexer.test(""" "Tien \\"1 " """, "Illegal Escape In String: Tien \\\"", 169))          
+        self.assertTrue(TestLexer.test(""" "Tien ' '" \\" """, "Illegal Escape In String: Tien ' '\" \\\"", 170))
+        self.assertTrue(TestLexer.test(""" "Tien \\' ""1 """, "Tien \\' ,Unclosed String: 1 ", 171))
+
+    def test_Comments_newline(self):
+        """test Comments và newline""" 
+        self.assertTrue(TestLexer.test("## Vo tien","<EOF>",172))    
+        self.assertTrue(TestLexer.test("###","<EOF>",173)) 
+        self.assertTrue(TestLexer.test("a##1","a,<EOF>",174)) 
+        self.assertTrue(TestLexer.test("a#","a,Error Token #",175))    
+        self.assertTrue(TestLexer.test("a\n##1\nb","a,\n,\n,b,<EOF>",176))  
+        self.assertTrue(TestLexer.test("a\n\n\n#","a,\n,\n,\n,Error Token #",177))
+        input = """a
+                    ## comment
+                """
+        expect = """a,
+,
+,<EOF>"""
+        self.assertTrue(TestLexer.test(input,expect,178))
+
+    def test_complex(self): # test case 140 ->
+                
+        input = "."
+        expect = "Error Token ."
+        self.assertTrue(TestLexer.test(input,expect,179))
+        
+        input = ";"
+        expect = "Error Token ;"
+        self.assertTrue(TestLexer.test(input,expect,180))
+        
+        input = "{"
+        expect = "Error Token {"
+        self.assertTrue(TestLexer.test(input,expect,181))       
+        
+        self.assertTrue(TestLexer.test("+1-2","+,1,-,2,<EOF>",182)) 
+        self.assertTrue(TestLexer.test(""" "Tien \t \n" """, "Unclosed String: Tien 	 ", 183))
+        self.assertTrue(TestLexer.test(""" "Tien \\" """, "Illegal Escape In String: Tien \\\"", 184))
+        self.assertTrue(TestLexer.test(""" "Tien \\\n """, "Illegal Escape In String: Tien \\\n", 185))
+        self.assertTrue(TestLexer.test(""" "Tien '\\ """, "Illegal Escape In String: Tien '\\ ", 186))
+        self.assertTrue(TestLexer.test(""" "Tien \'" " """, "Tien '\" ,<EOF>", 187))
+        self.assertTrue(TestLexer.test(""" "Tien \\\'" " """, "Tien \\',Unclosed String:  ", 188))
+        self.assertTrue(TestLexer.test(""" "Tien 
+                                       " """, "Unclosed String: Tien ", 189))
+        self.assertTrue(TestLexer.test(
+""" ##Vo Tien
+##Vo Tien\n
+##Vo Tien """,
+"""
+,
+,
+,<EOF>""", 190))
+        
+        self.assertTrue(TestLexer.test(
+""" ##Vo tien "123" ## 12 \n""",
+"""
+,<EOF>""", 191))
+        
+        self.assertTrue(TestLexer.test(
+""" "\\a" """,
+"""Illegal Escape In String: \\a""", 192))
+        
+        self.assertTrue(TestLexer.test(
+""" "\\:" """,
+"""Illegal Escape In String: \\:""", 193))
+        
+        self.assertTrue(TestLexer.test(
+""" "\\\\1 \\z" """,
+"""Illegal Escape In String: \\\\1 \z""", 194))
+        
+        self.assertTrue(TestLexer.test(
+""" "'z \\z" """,
+"""Illegal Escape In String: 'z \\z""", 195))
+        
+        self.assertTrue(TestLexer.test(
+""" "'a \\a" """,
+"""Illegal Escape In String: 'a \\a""", 196))
+        
+        self.assertTrue(TestLexer.test("1.1/3","1.1,/,3,<EOF>",197))
+
     """---------Multiple Test----------"""
     def test_94(self):
         input= """ \" \\\\\\ \" """
         expect="""Illegal Escape In String:  \\\\\\ """
-        self.assertTrue(TestLexer.test(input,expect,194))
+        self.assertTrue(TestLexer.test(input,expect,94))
 
     def test_95(self):
         self.assertTrue(TestLexer.test("\" \\'\" \"", " \\',Unclosed String: ", 95))
@@ -227,7 +376,7 @@ class LexerSuite(unittest.TestCase):
 ,
 ,
 ,end,<EOF>"""
-        self.assertTrue(TestLexer.test(test,expect,198))
+        self.assertTrue(TestLexer.test(test,expect,98))
 
     def test_99(self):
         test="""
@@ -241,7 +390,7 @@ class LexerSuite(unittest.TestCase):
         else writeString("No")
         end"""
         expect="""\n,func,areDivisors,(,number,num1,,,number,num2,),\n,return,(,(,num1,%,num2,=,0,),or,(,num2,%,num1,=,0,),),\n,func,main,(,),\n,begin,\n,var,num1,<-,readNumber,(,),\n,var,num2,<-,readNumber,(,),\n,if,(,areDivisors,(,num1,,,num2,),),writeString,(,Yes,),\n,else,writeString,(,No,),\n,end,<EOF>"""
-        self.assertTrue(TestLexer.test(test,expect,199))
+        self.assertTrue(TestLexer.test(test,expect,99))
 
     def test_100(self):
         
@@ -273,7 +422,7 @@ class LexerSuite(unittest.TestCase):
 ,
 ,end,
 ,<EOF>"""
-        self.assertTrue(TestLexer.test(input,expect,200))
+        self.assertTrue(TestLexer.test(input,expect,100))
 
     # def test_20(self):
     #     self.assertTrue(TestLexer.test("""\"this is unclosed string""","Unclosed String: this is unclosed string",120))
