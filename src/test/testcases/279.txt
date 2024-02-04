@@ -1,5 +1,11 @@
-
-        func main() begin
-            number arr[abc()] <- [1, 2, 3]
-        end     
+ 
+            func modifyArray(number arr[5])
+            begin
+                for i until i < 5 by 1
+                    arr[i] <- arr[i] + 1
+            end
+            func main()
+                number values[5] <- [1, 2, 3, 4, 5]
+                modifyArray(values)
+            end
         

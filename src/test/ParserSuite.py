@@ -1224,6 +1224,262 @@ end
         expect = 'Error on line 4 col 12: if'
         self.assertTrue(TestParser.test(input,expect,277))
 
+    def test_78(self):
+        input = """
+            func main() begin
+            foo()[3]<-2
+            end
+        """
+        expect = 'Error on line 3 col 17: ['
+        self.assertTrue(TestParser.test(input,expect,278))
+
+    def test_79(self):
+        input = """ 
+            func modifyArray(number arr[5])
+            begin
+                for i until i < 5 by 1
+                    arr[i] <- arr[i] + 1
+            end
+            func main()
+                number values[5] <- [1, 2, 3, 4, 5]
+                modifyArray(values)
+            end
+        """
+        expect = "Error on line 9 col 16: modifyArray"
+        self.assertTrue(TestParser.test(input, expect, 279))
+
+    def test_80(self):
+        input = """ 
+        func main() begin
+        number cube[2, 3, 4] <- [[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]],
+                        [[13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24]]]
+
+        for i until i < 2 by 1
+            for j until j < 3 by 1
+                for k until k < 4 by 1
+                    var value <- cube[i, j, k]
+
+        end
+        """
+        expect = "Error on line 3 col 80: \n"
+        self.assertTrue(TestParser.test(input, expect, 280))
+
+    def test_81(self):
+        input = """ 
+            func createArray(number size)
+            begin
+                var arr[size] <- [1, 2, 3, 4, 5]  
+            end
+            """
+        expect = "Error on line 4 col 23: ["
+        self.assertTrue(TestParser.test(input, expect, 281))
+
+    def test_82(self):
+        input="""
+        ##aaaaaaaaa
+        """
+        expect="Error on line 3 col 8: <EOF>"
+        self.assertTrue(TestParser.test(input,expect, 282))
+    
+    def test_83_to_97(self):
+        input = """    
+            var t <- 1[2]
+        """
+        expect = "Error on line 2 col 22: ["
+        self.assertTrue(TestParser.test(input, expect, 283))  
+        
+        input = """
+        """
+        expect = "Error on line 2 col 8: <EOF>"
+        self.assertTrue(TestParser.test(input, expect, 284)) 
+        
+        input = """    
+        func a()
+            begin
+                a["string"] <- 1
+            end
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 285)) 
+        
+        
+        input = """    
+            var a <- [1,2,3][4]
+        """
+        expect = "Error on line 2 col 28: ["
+        self.assertTrue(TestParser.test(input, expect, 286)) 
+        
+        input = """    
+        func a()
+            begin a <- 1
+            end
+        """
+        expect = "Error on line 3 col 18: a"
+        self.assertTrue(TestParser.test(input, expect, 287)) 
+         
+        
+        input = """    
+        func a()
+            begin
+                a()[1] <- 1
+            end
+        """
+        expect = "Error on line 4 col 19: ["
+        self.assertTrue(TestParser.test(input, expect, 288))      
+          
+
+        
+        input = """    
+        func a()
+            begin
+                hehehe[] <- 1
+            end
+        """
+        expect = "Error on line 4 col 23: ]"
+        self.assertTrue(TestParser.test(input, expect, 289))     
+        
+        input = """    
+        func a()
+            begin
+                1 <- 2
+            end
+        """
+        expect = "Error on line 4 col 16: 1"
+        self.assertTrue(TestParser.test(input, expect, 290))     
+        
+        input = """    
+            func a(string s["s"])
+        """
+        expect = "Error on line 2 col 28: s"
+        self.assertTrue(TestParser.test(input, expect, 291))
+           
+        
+        input = """    
+            number a <- fun()[1]
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 292))    
+        
+        
+        input = """    
+            func a()
+            begin
+                if 1 return true
+            end
+        """
+        expect = "Error on line 4 col 19: 1"
+        self.assertTrue(TestParser.test(input, expect, 293))    
+        
+        
+        input = """    
+            func a()
+            begin
+                if (1) return true
+                elif 1 return true
+            end
+        """
+        expect = "Error on line 5 col 21: 1"
+        self.assertTrue(TestParser.test(input, expect, 294))  
+        
+        input = """    
+            func a()
+            begin
+                if (1)  return true
+                else a <- 1 return true
+            end
+        """
+        expect = "Error on line 5 col 28: return"
+        self.assertTrue(TestParser.test(input, expect, 295))  
+        
+        
+        
+        input="""
+        func helloworld()
+        begin
+            writeString()
+        end
+        func main()
+        begin
+            helloworld() 
+        end
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,296))
+    
+        
+        input="""
+        func checkOddEven(number n)
+        begin
+            if (n % 2 = 0) 
+                return "Even"
+            else return "Odd"
+        end
+
+        func main()
+        begin
+            number num <- 7
+            string result <- checkOddEven(num)
+            writeString(result)
+        end
+        """
+        expect="successful"
+        self.assertTrue(TestParser.test(input,expect,297))
+
+    def test_98(self):
+        input = """
+        func compareArrays(number arr1[5], number arr2[5])
+        begin
+            if (length(arr1) != length(arr2)) 
+                return "Arrays are not equal"
+
+            number len <- length(arr1)
+            number i <- 0
+
+            for i until i < len by i + 1
+                if (arr1[i] != arr2[i]) 
+                    return "Arrays are not equal"
+            return "Arrays are equal"
+        end
+
+        func main()
+        begin
+            number array1[5] <- [1, 2, 3, 4, 5]
+            number array2[5] <- [1, 2, 3, 4, 5]
+
+            string result <- compareArrays(array1, array2)
+            writeString(result)
+        end
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 298))
+
+    def test_99_100(self):
+        input = """ 
+            ##12
+            func main(number a) 
+                ##12
+                ##12##12
+                ###12
+                begin 
+                    break
+                    break 
+                    continue
+                end
+            func main(number a)
+            ##12        
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 299))                  
+
+        input = """ 
+            ## 12
+            
+            var d <- 1 ## 12
+            ## 12
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect,300))
+
 
 
 

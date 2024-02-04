@@ -177,6 +177,16 @@ class LexerSuite(unittest.TestCase):
         expect="""func,main,(,string,a,,,string,b,),return,a,...,Unclosed String: the world"""
         self.assertTrue(TestLexer.test(test,expect,142))
 
+    def test_43(self):
+        input = """aa = "Hello \n world !";"""
+        expect = """aa,=,Unclosed String: Hello """
+        self.assertTrue(TestLexer.test(input, expect, 143))
+
+    def test_44(self):
+        input = """ "abc\\n def" """
+        expect = """abc\\n def,<EOF>"""
+        self.assertTrue(TestLexer.test(input, expect, 144))
+
     """---------Multiple Test----------"""
     def test_94(self):
         input= """ \" \\\\\\ \" """
